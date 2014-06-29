@@ -245,7 +245,7 @@ class usuario {
 
     private function emailPreCadastro($email, $hasch) {
         try {
-            $link_hasch = "http://casadosirmaos.com.br/igreja/confirm.php?security=$hasch";
+            $link_hasch = "http://casadosirmaos.com.br/verify/fr.php?security=$hasch";
             $email_remetente = "nao_responda@casadosirmaos.com.br";
             $assunto = "Confirmação de cadastro no portal Casa Dos Irmãos";
             $conteudo = "<h2>Confirme o seu cadastro no site da sua igreja</h2>";
@@ -265,14 +265,82 @@ class usuario {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
-            echo $exc->getTraceAsString();
+            
             $this->erroInterno($exc->getMessage() . "  [Justamente quando tentávamos enviar um email de confirmação, mas você poderá refazer isso em breve! ");
         }
     }
+    /**
+     * 
+     * @param String $email email do usuário
+     * @param String $senha Senha do usuário
+     * @return String  Retorna True ou False caso tenha ou não sucesso na tentativa de efetuar login
+     */
+    public function getHashSenha($email){
+                   
+            $sql = "select senha from usuario where email=:email";
+           try {            
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute(
+                    array("email" => $email)
+            );
+            /**
+             * @var Integer Armazena a quantidade de combinações emcontradas entre email e senha
+             */
+             $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $qtdResult = $stmt->rowCount();
+            
+      
+            /**
+             * Verifica se o batimento usuário senha retornou ao menos uma combinação
+             */
+            if($qtdResult>0){                
+                return $result['senha'];
+                
+            }  else {
+                return FALSE;
+            }
+            
+            
+            
+            
+           }  catch (Exception $exc){     
+               echo $exc->getTraceAsString();
+           
+            
+            $this->erroInterno($exc->getMessage() . "  Isso aconteceu enquanto tentávamos consultar seu usuário e senha para registrar-te");
+           }
+    }
+    public function getEmailByHash($hasch){
+        $sql = ("SELECT email FROM user_temp where hasch =:hasch");
+        try {
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute(array("hasch"=>$hasch));
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $qtdResult = $stmt->rowCount();
+            if($qtdResult>0){
+                return $result['email'];               
+            }  else {
+                $this->mensagem="Pré cadastrado não encontrado em nossos bancos de dados"; 
+                return FALSE;
+            }
+            
+            
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            $this->erroInterno($exc->getMessage() . "  [Justamente quando tentávamos consultar o id do tipo $descricao] ");
+        }
+        
+        
+        
+        
+        
+        
+    }
 
+    
     private function erroInterno($mensagemExcessao) {
 
-        echo "<p class=\"error\"> Ops! adentramos pela porta larga com o seguinte erro" . $mensagemExcessao . "Faremos uma oração e retornaremos ao caminho certo</p>";
+        echo "<p class=\"error\"> Ops! adentramos pela porta larga com o seguinte erro</p><p>" . $mensagemExcessao . "</p><p>Faremos uma oração e retornaremos ao caminho certo</p>";
     }
 
 }

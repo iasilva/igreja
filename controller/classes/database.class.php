@@ -11,13 +11,13 @@
  * @author Ivan Alves
  */
 class database {
-//    protected $dsn = 'mysql:host=localhost;dbname=casa_dos_irmaos';
-//    protected $username = "root";
-//    protected $passwd = "";
+    protected $dsn = 'mysql:host=localhost;dbname=casa_dos_irmaos';
+    protected $username = "root";
+    protected $passwd = "@Estevao2210";
     /*Para acesso online*/
-    protected $dsn = 'mysql:host=186.202.152.42;dbname=iasilva_casa_dos_irmaos';
-    protected $username = "iasil_igrejaCO";
-    protected $passwd = "@Estevao2210iae";
+//    protected $dsn = 'mysql:host=186.202.152.42;dbname=iasilva_casa_dos_irmaos';
+//    protected $username = "iasil_igrejaCO";
+//    protected $passwd = "@Estevao2210iae";
     
     public static $db;
 

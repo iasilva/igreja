@@ -6,7 +6,7 @@ $email = $_POST['email'];
 
 $usarioACadastrar = new usuario();
 $usuarioLogado = new usuario();
-$idUsuarioLogado = 1; /* Deve pegar no cookie */
+$idUsuarioLogado =1; /* Deve pegar no cookie */
 $idIgrejaUsuarioLogado = 1; /* Deve pegar no cookie */
 $emailUsuarioLogado = $usuarioLogado->getEmailUsuarioById($idUsuarioLogado);
 
@@ -111,6 +111,7 @@ if ($usuarioLogado->isTesoureiro($idUsuarioLogado)) {
             }
 //            
         } else {/* Se ainda não, prossegue cadastramento */
+            date_default_timezone_set("Brazil/East");
             if($usarioACadastrar->preCadastro($email, $idIgrejaUsuarioLogado, date('Y') . '-' . date('m') . '-' . date('d'), $idUsuarioLogado/* Deve pegar informação do usuário logado */)){
                 /*se o pré cadastro funcionar*/?>
                 
@@ -122,7 +123,7 @@ if ($usuarioLogado->isTesoureiro($idUsuarioLogado)) {
 
                     <div class="alert alert-danger"><?php echo $usarioACadastrar->getMensagem() ?></div>
                     <p>O email <strong><?php echo $email ?></strong> foi cadastrado com sucesso.</p>
-                    <p>oriente o usuário para que verifique sua caixa de entrada, no email <?php echo $email ?>, e caso não tenha recebido a mensagem de verificação, informe 
+                    <p>Oriente o usuário para que verifique sua caixa de entrada, no email <?php echo $email ?>, e caso não tenha recebido a mensagem de verificação, informe 
                         que essa mensagem pode estar na lixeira ou caixa de spam. Nesse caso, ele deverá marcar esse email como um email confiável.</p>
                     
                     
@@ -158,3 +159,6 @@ if ($usuarioLogado->isTesoureiro($idUsuarioLogado)) {
 }
 ?>
     
+
+                
+              
